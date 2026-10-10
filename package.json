@@ -1,0 +1,20 @@
+{
+  "name": "sns-lambda-sqs",
+  "version": "1.0.0",
+  "description": "sns-lambda-sqs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "sns",
+    "lambda",
+    "sqs",
+    "serverless"
+  ],
+  "author": "Joandysson Gama",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-localstack": "^1.0.0"
+  }
+}

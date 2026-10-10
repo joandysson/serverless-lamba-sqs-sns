@@ -1,0 +1,54 @@
+service: sns-lamda-sqs
+
+plugins:
+  - serverless-localstack
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  memorySize: 128
+  timeout: 10
+  versionFunctions: false
+  tracing:
+    lambda: true
+  stage: local
+
+custom:
+  localstack:
+    stages:
+      - local
+    host: http://localstack
+    edgePort: 4566
+    autoStart: false
+    cloudWatch: 'aws/lambda/sns-lamda-sqs'
+    bucket: 'sns-lamda-sqs'
+    debug: true
+    # lambda:
+    #   mountCode: true
+
+functions:
+  lambda:
+    handler: index.handler
+    name: sns-lamda-sqs
+    description: Lambda function
+    events:
+      # - sns:
+      #     arn: SnsTopic
+      #     topicName: 'sns-topic'
+
+      - sns:
+          arn: 'arn:aws:sns:us-east-1:000000000000:sns-topic'
+          topicName: 'sns-topic'
+
+resources:
+  Resources:
+    SqsQueueFifo:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: "sqs-queue.fifo"
+        FifoQueue: true
+    SnsTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: sns-topic

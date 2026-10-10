@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:1.0.3
+    networks:
+      - default
+    ports:
+      - '4566:4566'
+    environment:
+      - EDGE_PORT=4566
+      - SERVICES=sns,lambda,sqs,cloudformation,logs,sts,s3,iam
+
+  lambda:
+    container_name: lambda
+    build:
+      context: .
+      dockerfile: dockerfile
+    entrypoint: [sh, -c, 'sleep infinity']
+    volumes:
+      - .:/lambda
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
